@@ -1,3 +1,48 @@
+# Changelog
+
+## [3.0.0](https://github.com/eggjs/jsonp/compare/v2.0.0...v3.0.0) (2025-01-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop Node.js < 18.19.0 support
+
+part of https://github.com/eggjs/egg/issues/3644
+
+https://github.com/eggjs/egg/issues/5257
+
+<!-- This is an auto-generated comment: release notes by coderabbit.ai
+-->
+## Summary by CodeRabbit
+
+## Release Notes
+
+- **New Features**
+  - Added TypeScript support for the JSONP plugin
+  - Modernized project structure with ES module syntax
+  - Enhanced type definitions and configuration
+  - Introduced new GitHub Actions workflows for CI/CD
+  - Added a new class for JSONP error handling
+
+- **Breaking Changes**
+  - Renamed package from `egg-jsonp` to `@eggjs/jsonp`
+  - Dropped support for Node.js versions below 18.19.0
+  - Refactored configuration and middleware approach
+
+- **Improvements**
+  - Updated GitHub Actions workflows for CI/CD
+  - Improved security checks for JSONP requests
+  - Added more robust error handling
+  - Enhanced logging configuration
+
+- **Dependency Updates**
+  - Updated core dependencies
+  - Migrated to modern TypeScript tooling
+<!-- end of auto-generated comment: release notes by coderabbit.ai -->
+
+### Features
+
+* support cjs and esm both by tshy ([#12](https://github.com/eggjs/jsonp/issues/12)) ([9136768](https://github.com/eggjs/jsonp/commit/9136768ba518dcec765f86af3e7259d131b6917b))
 
 2.0.0 / 2017-11-11
 ==================
