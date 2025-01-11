@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = app => {
   app.get('/default', app.jsonp(), 'jsonp.index');
   app.get('/empty', app.jsonp(), 'jsonp.empty');
@@ -11,11 +9,11 @@ module.exports = app => {
   app.get('/csrf', app.jsonp({ csrf: true }), 'jsonp.index');
   app.get('/both', app.jsonp({ csrf: true, whiteList: 'test.com' }), 'jsonp.index');
   app.get('/mark', app.jsonp(), 'jsonp.mark');
-  app.get('/error', function*(next) {
+  app.get('/error', async (ctx, next) => {
     try {
-      yield next;
+      await next();
     } catch (error) {
-      this.createJsonpBody({ msg: error.message });
+      ctx.createJsonpBody({ msg: error.message });
     }
    }, app.jsonp(), 'jsonp.error');
 };

@@ -1,26 +1,26 @@
-'use strict';
+import { jsonp as jsonpBody } from 'jsonp-body';
+import { Context } from '@eggjs/core';
+import { JSONP_CONFIG } from '../../lib/private_key.js';
 
-const jsonpBody = require('jsonp-body');
-const { JSONP_CONFIG } = require('../../lib/private_key');
-
-module.exports = {
+export default class JSONPContext extends Context {
   /**
    * detect if response should be jsonp
    */
   get acceptJSONP() {
-    return !!(this[JSONP_CONFIG] && this[JSONP_CONFIG].jsonpFunction);
-  },
+    const jsonpConfig = Reflect.get(this, JSONP_CONFIG) as any;
+    return !!(jsonpConfig?.jsonpFunction);
+  }
 
   /**
    * JSONP wrap body function
    * Set jsonp response wrap function, other plugin can use it.
    * If not necessary, please don't use this method in your application code.
-   * @param {Object} body respones body
+   * @param {Object} body response body
    * @private
    */
-  createJsonpBody(body) {
-    const jsonpConfig = this[JSONP_CONFIG];
-    if (!jsonpConfig || !jsonpConfig.jsonpFunction) {
+  createJsonpBody(body: any) {
+    const jsonpConfig = Reflect.get(this, JSONP_CONFIG) as any;
+    if (!jsonpConfig?.jsonpFunction) {
       this.body = body;
       return;
     }
@@ -30,5 +30,5 @@ module.exports = {
     body = body === undefined ? null : body;
     // protect from jsonp xss
     this.body = jsonpBody(body, jsonpConfig.jsonpFunction, jsonpConfig.options);
-  },
-};
+  }
+}

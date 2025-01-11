@@ -1,56 +1,63 @@
-# egg-jsonp
+# @eggjs/jsonp
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![Node.js CI](https://github.com/eggjs/jsonp/actions/workflows/nodejs.yml/badge.svg)](https://github.com/eggjs/jsonp/actions/workflows/nodejs.yml)
 [![Test coverage][codecov-image]][codecov-url]
-[![David deps][david-image]][david-url]
 [![Known Vulnerabilities][snyk-image]][snyk-url]
 [![npm download][download-image]][download-url]
+[![Node.js Version](https://img.shields.io/node/v/@eggjs/jsonp.svg?style=flat)](https://nodejs.org/en/download/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
 
-[npm-image]: https://img.shields.io/npm/v/egg-jsonp.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/egg-jsonp
-[travis-image]: https://img.shields.io/travis/eggjs/egg-jsonp.svg?style=flat-square
-[travis-url]: https://travis-ci.org/eggjs/egg-jsonp
-[codecov-image]: https://img.shields.io/codecov/c/github/eggjs/egg-jsonp.svg?style=flat-square
-[codecov-url]: https://codecov.io/github/eggjs/egg-jsonp?branch=master
-[david-image]: https://img.shields.io/david/eggjs/egg-jsonp.svg?style=flat-square
-[david-url]: https://david-dm.org/eggjs/egg-jsonp
-[snyk-image]: https://snyk.io/test/npm/egg-jsonp/badge.svg?style=flat-square
-[snyk-url]: https://snyk.io/test/npm/egg-jsonp
-[download-image]: https://img.shields.io/npm/dm/egg-jsonp.svg?style=flat-square
-[download-url]: https://npmjs.org/package/egg-jsonp
+[npm-image]: https://img.shields.io/npm/v/@eggjs/jsonp.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/@eggjs/jsonp
+[codecov-image]: https://img.shields.io/codecov/c/github/eggjs/jsonp.svg?style=flat-square
+[codecov-url]: https://codecov.io/github/eggjs/jsonp?branch=master
+[snyk-image]: https://snyk.io/test/npm/@eggjs/jsonp/badge.svg?style=flat-square
+[snyk-url]: https://snyk.io/test/npm/@eggjs/jsonp
+[download-image]: https://img.shields.io/npm/dm/@eggjs/jsonp.svg?style=flat-square
+[download-url]: https://npmjs.org/package/@eggjs/jsonp
 
 An egg plugin for jsonp support.
+
+## Requirements
+
+- egg >= 4.x
 
 ## Install
 
 ```bash
-$ npm i egg-jsonp --save
+npm i @eggjs/jsonp
 ```
 
 ## Usage
 
-```js
-// {app_root}/config/plugin.js
-exports.jsonp = {
-  enable: true,
-  package: 'egg-jsonp',
+```ts
+// {app_root}/config/plugin.ts
+
+export default {
+  jsonp: {
+    enable: true,
+    package: '@eggjs/jsonp',
+  },
 };
 ```
 
 ## Configuration
 
-* {String|Array} callback - jsonp callback method key, default to `[ '_callback', 'callback' ]`
-* {Number} limit - callback method name's max length, default to `50`
-* {Boolean} csrf - enable csrf check or not. default to false
-* {String|RegExp|Array} whiteList - referrer white list
+- {String|Array} callback - jsonp callback method key, default to `[ '_callback', 'callback' ]`
+- {Number} limit - callback method name's max length, default to `50`
+- {Boolean} csrf - enable csrf check or not. default to false
+- {String|RegExp|Array} whiteList - referrer white list
 
 if whiteList's type is `RegExp`, referrer must match `whiteList`, pay attention to the first `^` and last `/`.
 
-```js
-exports.jsonp = {
-  whiteList: /^https?:\/\/test.com\//,
-}
+```ts
+export default {
+  jsonp: {
+    whiteList: /^https?:\/\/test.com\//,
+  },
+};
+
 // matchs referrer:
 // https://test.com/hello
 // http://test.com/
@@ -58,10 +65,13 @@ exports.jsonp = {
 
 if whiteList's type is `String` and starts with `.`:
 
-```js
-exports.jsonp = {
-  whiteList: '.test.com',
+```ts
+export default {
+  jsonp: {
+    whiteList: '.test.com',
+  },
 };
+
 // matchs domain test.com:
 // https://test.com/hello
 // http://test.com/
@@ -73,10 +83,13 @@ exports.jsonp = {
 
 if whiteList's type is `String` and not starts with `.`:
 
-```js
-exports.jsonp = {
-  whiteList: 'sub.test.com',
+```ts
+export default {
+  jsonp: {
+    whiteList: 'sub.test.com',
+  },
 };
+
 // only matchs domain sub.test.com:
 // https://sub.test.com/hello
 // http://sub.test.com/
@@ -84,29 +97,32 @@ exports.jsonp = {
 
 whiteList also can be an array:
 
-```js
-exports.jsonp = {
-  whiteList: [ '.foo.com', '.bar.com' ],
+```ts
+export default {
+  jsonp: {
+    whiteList: [ '.foo.com', '.bar.com' ],
+  },
 };
 ```
 
-see [config/config.default.js](https://github.com/eggjs/egg-jsonp/blob/master/config/config.default.js) for more detail.
+see [config/config.default.ts](https://github.com/eggjs/jsonp/blob/master/src/config/config.default.ts) for more detail.
 
 ## API
 
-* ctx.acceptJSONP - detect if response should be jsonp, readonly
+- ctx.acceptJSONP - detect if response should be jsonp, readonly
 
 ## Example
 
-In `app/router.js`
+In `app/router.ts`
 
-```js
+```ts
 // Create once and use in any router you want to support jsonp.
 const jsonp = app.jsonp();
+
 app.get('/default', jsonp, 'jsonp.index');
 app.get('/another', jsonp, 'jsonp.another');
 
-// Customize by create another jsonp middleware with specific sonfigurations.
+// Customize by create another jsonp middleware with specific configurations.
 app.get('/customize', app.jsonp({ callback: 'fn' }), 'jsonp.customize');
 ```
 
@@ -116,5 +132,10 @@ Please open an issue [here](https://github.com/eggjs/egg/issues).
 
 ## License
 
-[MIT](https://github.com/eggjs/egg-jsonp/blob/master/LICENSE)
+[MIT](LICENSE)
 
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=eggjs/jsonp)](https://github.com/eggjs/jsonp/graphs/contributors)
+
+Made with [contributors-img](https://contrib.rocks).
