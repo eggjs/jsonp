@@ -1,3 +1,4 @@
+import { strict as assert } from 'node:assert';
 import { mm, MockApplication } from '@eggjs/mock';
 
 describe('test/jsonp.test.ts', () => {
@@ -11,6 +12,10 @@ describe('test/jsonp.test.ts', () => {
 
   after(() => app.close());
   afterEach(mm.restore);
+
+  it('should access acceptJSONP return false by default', () => {
+    assert.equal(app.mockContext().acceptJSONP, false);
+  });
 
   it('should support json', async () => {
     await app.httpRequest()
